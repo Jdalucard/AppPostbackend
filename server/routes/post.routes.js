@@ -11,8 +11,8 @@ const router = Router();
 
 router.get("/posts", getPosts);
 router.post("/posts", createPost);
-router.put("/posts/:id", updatePost);
-router.delete("/posts/:id", deletePost);
-router.get("/posts/:id", getPost);
+router.put("/posts/:_id", updatePost);
+router.delete("/posts/:_id", deletePost);
+router.get("/posts/:_id", getPost);
 
 export default router;
