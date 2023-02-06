@@ -41,23 +41,32 @@ export const createPost = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { idProducto } = req.params;
+    const { title, description, image } = req.body;
 
-    let image;
+    const actualizar = {
+      title: title,
+      description: description,
+      image: image,
+    };
 
     if (req.files?.image) {
       const result = await uploadImage(req.files.image.tempFilePath);
-      /*  console.log(result); */
-      req.body.image = {
+      /* console.log(result); */
+      actualizar.image = {
         public_id: result.public_id,
         secure_url: result.secure_url,
       };
     }
 
-    const updatePost = await Post.findByIdAndUpdate(idProducto, req.body, {
+    const PostActulizado = await Post.findOneAndUpdate(idProducto, actualizar, {
       new: true,
     });
-
-    return res.send(updatePost);
+    console.log(PostActulizado);
+    return res.json({
+      ok: true,
+      mensaje: "post actulizado",
+      datos: PostActulizado,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
