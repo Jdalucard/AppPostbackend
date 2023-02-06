@@ -40,7 +40,20 @@ export const createPost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   try {
-    const updatePost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+    const { idProducto } = req.params;
+
+    let image;
+
+    if (req.files?.image) {
+      const result = await uploadImage(req.files.image.tempFilePath);
+      /*  console.log(result); */
+      req.body.image = {
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+      };
+    }
+
+    const updatePost = await Post.findByIdAndUpdate(idProducto, req.body, {
       new: true,
     });
 
